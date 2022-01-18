@@ -1,0 +1,30 @@
+{
+    "name": "vgplay/fbshare_reward",
+    "description": "Event fb share reward",
+    "type": "package",
+    "require": {
+        "php": "^7.0",
+        "laravel/framework": "^6|^7|^8",
+        "vgplay/laravel-cached-setting": "^1"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Vgplay\\FbShareReward\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "dung199551",
+            "email": "dung199551@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Vgplay\\FbShareReward\\ShareServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable"
+}
