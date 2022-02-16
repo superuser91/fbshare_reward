@@ -2,6 +2,7 @@
 
 namespace Vgplay\FbShareReward\Actions;
 
+use Illuminate\Support\Facades\DB;
 use Vgplay\FbShareReward\Contracts\Sharer;
 use Vgplay\FbShareReward\Exceptions\SocialSharedException;
 
@@ -13,15 +14,16 @@ class ClaimShareReward
             throw new SocialSharedException();
         }
 
-        $sharer->updateShareCount();
-
-        return $sharer->claimFbShareReward();
+        return DB::transaction(function () use ($sharer) {
+            $sharer->updateShareCount();
+            return $sharer->claimFbShareReward();
+        });
     }
 
-    protected function isClaimable(Sharer $user)
+    protected function isClaimable(Sharer $sharer)
     {
-        return empty($user->last_share)
-            || $user->share_count < (int) setting('site_max_share_count', 1)
-            || now()->diffInDays($user->last_share);
+        return empty($sharer->getLastShare())
+            || $sharer->getShareCount() < (int) setting('site_max_share_count', $sharer->getMaxShareCount())
+            || !now()->isSameDay($sharer->getLastShare());
     }
 }

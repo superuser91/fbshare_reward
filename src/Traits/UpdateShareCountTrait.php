@@ -6,7 +6,7 @@ trait UpdateShareCountTrait
 {
     public function updateShareCount(): bool
     {
-        if (now()->diffInDays($this->last_share) == 0) {
+        if (now()->isSameDay($this->last_share)) {
             return $this->increment('share_count', 1, ['last_share' => now()]);
         }
 
@@ -14,5 +14,15 @@ trait UpdateShareCountTrait
             'share_count' => 1,
             'last_share' => now()
         ]);
+    }
+
+    public function getLastShare()
+    {
+        return $this->last_share;
+    }
+
+    public function getShareCount()
+    {
+        return $this->share_count;
     }
 }
